@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 from models import db, Task
+from datetime import datetime
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tasks.db'
@@ -15,13 +16,15 @@ with app.app_context():
 def index():
     if request.method == "POST":
         task_content = request.form.get("content")
-        if task_content:
-            new_task = Task(content=task_content)
+        due_date_str = request.form.get("due_date")
+        if task_content and due_date_str:
+            due_date = datetime.strptime(due_date_str, '%Y-%m-%d').date()
+            new_task = Task(content=task_content, due_date=due_date)
             db.session.add(new_task)
             db.session.commit()
         return redirect(url_for("index"))
 
-    tasks = Task.query.all()
+    tasks = Task.query.order_by(Task.due_date).all()
     return render_template("index.html", tasks=tasks)
 
 @app.route("/delete/<int:id>")

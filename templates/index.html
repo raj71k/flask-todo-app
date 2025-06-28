@@ -8,13 +8,14 @@
 
     <form method="POST">
         <input type="text" name="content" placeholder="Enter task" required>
+        <input type="date" name="due_date" required>
         <input type="submit" value="Add">
     </form>
 
     <ul>
         {% for task in tasks %}
             <li>
-                {{ task.content }} 
+                {{ task.content }} - Due: {{ task.due_date.strftime('%d-%m-%Y') }}
                 <a href="{{ url_for('delete', id=task.id) }}">[Delete]</a>
             </li>
         {% endfor %}
