@@ -5,6 +5,15 @@
 </head>
 <body>
     <h1>My To-Do App</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div style="margin: 10px 0; padding: 10px; border: 1px solid #ccc; background-color: {% if category == 'success' %}#d4edda{% elif category == 'warning' %}#fff3cd{% endif %};">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
 
     <form method="POST">
         <input type="text" name="content" placeholder="Enter task" required>

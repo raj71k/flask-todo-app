@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash, get_flashed_messages
 from models import db, Task
 from datetime import datetime
 
 app = Flask(__name__)
+app.secret_key = 'samarth71'  # required for flash()
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tasks.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -17,11 +18,15 @@ def index():
     if request.method == "POST":
         task_content = request.form.get("content")
         due_date_str = request.form.get("due_date")
-        if task_content and due_date_str:
-            due_date = datetime.strptime(due_date_str, '%Y-%m-%d').date()
-            new_task = Task(content=task_content, due_date=due_date)
-            db.session.add(new_task)
-            db.session.commit()
+        if not task_content:
+            flash("⚠️ Task cannot be empty!", "warning")
+            return redirect(url_for('index'))
+        
+        due_date = datetime.strptime(due_date_str, '%Y-%m-%d').date()
+        new_task = Task(content=task_content, due_date=due_date)
+        db.session.add(new_task)
+        db.session.commit()
+        flash("✅ Task added successfully!", "success")
         return redirect(url_for("index"))
 
     tasks = Task.query.order_by(Task.due_date).all()
