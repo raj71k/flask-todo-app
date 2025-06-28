@@ -14,10 +14,15 @@
 
     <ul>
         {% for task in tasks %}
-            <li>
-                {{ task.content }} - Due: {{ task.due_date.strftime('%d-%m-%Y') }}
+            <li style="margin-bottom: 10px;">
+                {% if task.completed %}
+                     ✅ <s>{{ task.content }}</s> (Due: {{ task.due_date }})
+                {% else %}
+                            {{ task.content }} - Due: {{ task.due_date.strftime('%d-%m-%Y') }}
                 <a href="{{ url_for('edit', id=task.id) }}">✏️ Edit</a>
+                <a href="{{ url_for('mark_done', id=task.id) }}">✔️ Mark as Done</a>
                 <a href="{{ url_for('delete', id=task.id) }}">[Delete]</a>
+                {% endif %}
             </li>
         {% endfor %}
     </ul>

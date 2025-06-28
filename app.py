@@ -48,5 +48,12 @@ def edit(id):
 
     return render_template('edit.html', task=task)
 
+@app.route('/done/<int:id>')
+def mark_done(id):
+    task = Task.query.get_or_404(id)
+    task.completed = True
+    db.session.commit()
+    return redirect(url_for('index'))
+
 if __name__ == "__main__":
     app.run(debug=True)
