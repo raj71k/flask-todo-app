@@ -34,5 +34,19 @@ def delete(id):
     db.session.commit()
     return redirect(url_for("index"))
 
+@app.route("/edit/<int:id>", methods=['GET', 'POST'])
+def edit(id):
+    task = Task.query.get_or_404(id)
+    if request.method == 'POST':
+        task.content = request.form['content']
+         # Convert the string to a Python date object
+        date_str = request.form['due_date']
+        task.due_date = datetime.strptime(date_str, '%Y-%m-%d').date()
+
+        db.session.commit()
+        return redirect(url_for('index'))
+
+    return render_template('edit.html', task=task)
+
 if __name__ == "__main__":
     app.run(debug=True)

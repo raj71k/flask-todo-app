@@ -1,0 +1,16 @@
+<!-- templates/edit.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Task</title>
+</head>
+<body>
+    <h2>Edit Task</h2>
+    <form method="POST">
+        <input type="text" name="content" value="{{ task.content }}" required>
+        <input type="date" name="due_date" value="{{ task.due_date }}" required>
+        <button type="submit">Update</button>
+    </form>
+    <a href="{{ url_for('index') }}">Back</a>
+</body>
+</html>
