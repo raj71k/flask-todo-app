@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>To-Do List</title>
+</head>
+<body>
+    <h1>My To-Do App</h1>
+
+    <form method="POST">
+        <input type="text" name="content" placeholder="Enter task" required>
+        <input type="submit" value="Add">
+    </form>
+
+    <ul>
+        {% for task in tasks %}
+            <li>
+                {{ task.content }} 
+                <a href="{{ url_for('delete', id=task.id) }}">[Delete]</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
