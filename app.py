@@ -29,8 +29,18 @@ def index():
         flash("✅ Task added successfully!", "success")
         return redirect(url_for("index"))
 
-    tasks = Task.query.order_by(Task.due_date).all()
-    return render_template("index.html", tasks=tasks)
+    #tasks = Task.query.order_by(Task.due_date).all()
+    # 👇 Handle GET method and sorting
+    sort_by = request.args.get('sort_by', 'due')  # default = due
+
+    if sort_by == 'status':
+        tasks = Task.query.order_by(Task.completed, Task.due_date).all()
+    elif sort_by == 'alpha':
+        tasks = Task.query.order_by(Task.content).all()
+    else:
+        tasks = Task.query.order_by(Task.due_date).all()
+
+    return render_template("index.html", tasks=tasks,sort_by=sort_by)
 
 @app.route("/delete/<int:id>")
 def delete(id):

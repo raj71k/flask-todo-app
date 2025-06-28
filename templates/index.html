@@ -5,6 +5,16 @@
 </head>
 <body>
     <h1>My To-Do App</h1>
+     <!-- 🔽 Sort By Dropdown -->
+  <form method="get">
+    <label for="sort_by">Sort by:</label>
+    <select name="sort_by" id="sort_by" onchange="this.form.submit()">
+      <option value="due" {% if sort_by == 'due' %}selected{% endif %}>Due Date</option>
+      <option value="status" {% if sort_by == 'status' %}selected{% endif %}>Status</option>
+      <option value="alpha" {% if sort_by == 'alpha' %}selected{% endif %}>Alphabetically</option>
+    </select>
+  </form>
+    <br>
     {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
     {% for category, message in messages %}
